@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Hug for You</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff5f7;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Animated Background Stars */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #fff0f3 0%, #ffdde1 100%);
+            z-index: -1;
+        }
+
+        .main-card {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.15);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            border: 2px solid #ffb3c1;
+            position: relative;
+        }
+
+        .hug-icon {
+            font-size: 90px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: floating 2.5s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff4d6d;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        .heart-touching-msg {
+            color: #594d5b;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        /* SEPARATED BUTTONS */
+        .btn-wrapper {
+            display: flex;
+            justify-content: space-around; /* This separates the buttons */
+            align-items: center;
+            margin-top: 20px;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+        }
+
+        .btn-yes {
+            background: #ff4d6d;
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            background: #c9184a;
+        }
+
+        .btn-no {
+            background: #f8f9fa;
+            color: #ff4d6d;
+            border: 2px solid #ff4d6d;
+            z-index: 999;
+        }
+
+        #error-txt {
+            color: #d00000;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Success Overlay */
+        .success-page {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            text-align: center;
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .big-msg {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #ff4d6d;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+
+    <div class="main-card" id="card">
+        <div class="hug-icon">🧸💖</div>
+        <h1>Warm Hugs?</h1>
+        <p class="heart-touching-msg">
+            Distance may keep us apart, but a hug is a bridge built by the heart. 🌸 <br><br>
+            If I could, I'd hold you tight until all your worries melted away. Will you accept this virtual hug?
+        </p>
+        
+        <div class="btn-wrapper">
+            <button class="btn btn-yes" onclick="celebrate()">Yes!</button>
+            <button class="btn btn-no" id="noBtn">No</button>
+        </div>
+        
+        <div id="error-txt">⚠️ Error: This heart only accepts "Yes"! Please try again. ❤️</div>
+    </div>
+
+    <div class="success-page" id="success">
+        <div style="font-size: 100px;">🤗✨🌹</div>
+        <div class="big-msg">
+            "A hug is the perfect gift; one size fits all, and nobody minds if you return it." 
+            <br><br>
+            <span style="font-size: 1.2rem; font-family: 'Quicksand'; color: #555;">
+                Sending you a squeeze so warm it lasts all day! You are precious. ❤️
+            </span>
+        </div>
+        <button class="btn btn-yes" onclick="location.reload()">Send One Back</button>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const errorTxt = document.getElementById('error-txt');
+
+        // Logic to make "No" button slide away
+        noBtn.addEventListener('mouseover', () => {
+            errorTxt.style.display = 'block';
+            
+            // Generate random coordinates within the screen
+            const padding = 100;
+            const newX = Math.random() * (window.innerWidth - padding);
+            const newY = Math.random() * (window.innerHeight - padding);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+            
+            // Playful text change
+            const labels = ["Can't click me!", "Try again", "Nope!", "Wrong way!", "Click Yes!"];
+            noBtn.innerText = labels[Math.floor(Math.random() * labels.length)];
+        });
+
+        function celebrate() {
+            document.getElementById('success').style.display = 'flex';
+            launchConfetti();
+        }
+
+        function launchConfetti() {
+            for(let i=0; i<40; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = ['❤️', '💖', '🫂', '🌸'][Math.floor(Math.random()*4)];
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.transition = `transform ${Math.random() * 3 + 2}s linear`;
+                heart.style.zIndex = '1001';
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
+                }, 100);
+                
+                setTimeout(() => heart.remove(), 5000);
+            }
+        }
+    </script>
+</body>
+</html>
